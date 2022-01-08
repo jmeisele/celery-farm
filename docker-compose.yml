@@ -1,0 +1,62 @@
+version: "3.1"
+
+services:
+  frontend:
+    container_name: frontend
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    command: npm run start
+
+  api:
+    container_name: api
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: prod
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      DB_URL: "mongo:27017"
+      DB_NAME: "test-db"
+      REDIS_URL: "redis"
+    command: python3 api/main.py
+
+  mongo:
+    image: mongo
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+    restart: always
+
+  workers:
+    container_name: celery_workers
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: prod
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      BROKER_URL: "redis://redis:6379/0"
+    command: celery --app=workers worker --loglevel=INFO
