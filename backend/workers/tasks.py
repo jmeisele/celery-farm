@@ -1,4 +1,4 @@
-from .celery import app
+from .main import app
 
 @app.task
 def hello():
