@@ -1,4 +1,5 @@
 from .main import app
+from time import sleep
 
 @app.task
 def hello():
@@ -6,5 +7,6 @@ def hello():
 
 @app.task
 def reverse(text):
+    sleep(5)
     return text[::-1]
 
