@@ -1,6 +1,5 @@
 import os
 from pydantic import BaseSettings
-from db.config import DatabaseSettings
 
 class CommonSettings(BaseSettings):
     APP_NAME: str = "Celery FaRM"
@@ -12,9 +11,9 @@ class ServerSettings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8000
 
-# class DatabaseSettings(BaseSettings):
-#     DB_URL: str = os.environ["DB_URL"]
-#     DB_NAME: str = os.environ["DB_NAME"]
+class DatabaseSettings(BaseSettings):
+    DB_URL: str = os.environ["DB_URL"]
+    DB_NAME: str = os.environ["DB_NAME"]
 
 class RedisSettings(BaseSettings):
     REDIS_URL: str = os.environ["REDIS_URL"]
@@ -22,4 +21,4 @@ class RedisSettings(BaseSettings):
 class Settings(CommonSettings, ServerSettings, DatabaseSettings, RedisSettings):
     pass
 
-settings = Settings()
+api_settings = Settings()

@@ -1,12 +1,18 @@
 from typing import List
 
-from fastapi import APIRouter, BackgroundTasks, Body, HTTPException, Request, status
+from fastapi import APIRouter, Body, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from models.model import TaskModel, UpdateTaskModel
+from workers.tasks import reverse
 
 router = APIRouter()
+
+@router.post("/tasks", status_code=201)
+async def create_celery_task(payload = Body(...)):
+    task = reverse.delay(payload)
+    return JSONResponse({"task_id": task.id})
 
 @router.post("/", response_description="Add new task")
 async def create_task(request: Request, task: TaskModel = Body(...)) -> JSONResponse:

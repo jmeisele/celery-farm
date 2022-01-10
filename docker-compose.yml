@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.8"
 
 services:
   frontend:
@@ -30,7 +30,9 @@ services:
       DB_URL: "mongo:27017"
       DB_NAME: "test-db"
       REDIS_URL: "redis"
-    command: python3 api/main.py
+      BROKER_URL: "redis://redis:6379/0"
+      BACKEND_URL: "redis://redis:6379/0"
+    command: python3 main.py
 
   mongo:
     image: mongo
@@ -60,4 +62,5 @@ services:
       - redis
     environment:
       BROKER_URL: "redis://redis:6379/0"
+      BACKEND_URL: "redis://redis:6379/0"
     command: celery -A workers.main worker --loglevel=INFO
