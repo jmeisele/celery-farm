@@ -4,15 +4,15 @@ import redis
 from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from core.config import settings
+from core.config import api_settings
 
 
 def _startup_mongodb_client(app: FastAPI) -> None:
-    app.mongodb_client = AsyncIOMotorClient(settings.DB_URL)
-    app.mongodb = app.mongodb_client[settings.DB_NAME]
+    app.mongodb_client = AsyncIOMotorClient(api_settings.DB_URL)
+    app.mongodb = app.mongodb_client[api_settings.DB_NAME]
 
 def _startup_redis_client(app: FastAPI) -> None:
-    app.redis_client = redis.Redis(host=settings.REDIS_URL, port=6379, db=0)
+    app.redis_client = redis.Redis(host=api_settings.REDIS_URL, port=6379, db=0)
 
 def _shutdown_mongodb_client(app: FastAPI) -> None:
     app.mongodb_client.close()

@@ -1,7 +1,6 @@
 import os
 from pydantic import BaseSettings
 
-
 class CommonSettings(BaseSettings):
     APP_NAME: str = "Celery FaRM"
     DEBUG_MODE: bool = False
@@ -22,4 +21,4 @@ class RedisSettings(BaseSettings):
 class Settings(CommonSettings, ServerSettings, DatabaseSettings, RedisSettings):
     pass
 
-settings = Settings()
+api_settings = Settings()
