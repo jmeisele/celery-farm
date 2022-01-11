@@ -7,6 +7,3 @@ celery_app = Celery(
     include=['workers.tasks'],
     backend=settings.BACKEND_URL
 )
-
-# if __name__ == '__main__':
-#     app.start()
