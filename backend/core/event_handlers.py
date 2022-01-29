@@ -1,10 +1,9 @@
 from typing import Callable
 
 import redis
+from core.config import api_settings
 from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
-
-from core.config import api_settings
 
 
 def _startup_mongodb_client(app: FastAPI) -> None:

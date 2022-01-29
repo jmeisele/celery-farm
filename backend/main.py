@@ -1,8 +1,7 @@
 import uvicorn
-from fastapi import FastAPI
-
 from core.config import api_settings
 from core.event_handlers import start_app_handler, stop_app_handler
+from fastapi import FastAPI
 from routes.router import api_router
 
 
