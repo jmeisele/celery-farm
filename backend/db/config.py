@@ -1,5 +1,7 @@
 import os
+
 from pydantic import BaseSettings
+
 
 class DatabaseSettings(BaseSettings):
     DB_URL: str = os.environ["DB_URL"]

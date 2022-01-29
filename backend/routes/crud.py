@@ -9,10 +9,12 @@ from workers.tasks import reverse
 
 router = APIRouter()
 
+
 @router.post("/tasks", status_code=201)
-async def create_celery_task(payload = Body(...)):
+async def create_celery_task(payload=Body(...)):
     task = reverse.delay(payload)
     return JSONResponse({"task_id": task.id})
+
 
 @router.post("/", response_description="Add new task")
 async def create_task(request: Request, task: TaskModel = Body(...)) -> JSONResponse:
@@ -23,6 +25,7 @@ async def create_task(request: Request, task: TaskModel = Body(...)) -> JSONResp
     )
 
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_task)
+
 
 @router.get("/", response_description="List all tasks")
 async def list_tasks(request: Request) -> List[dict]:
