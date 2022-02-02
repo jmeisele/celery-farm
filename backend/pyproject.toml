@@ -24,3 +24,32 @@ mypy = "^0.930"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ['py36']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+# This section is just a doc placeholder..see setup.cfg
+#   https://gitlab.com/pycqa/flake8/-/issues/428#note_251982786
+max-complexity = 10
+format = "pylint"
+statistics = "True"
+max-line-length = 120
+# ignore non-PEP8 lints
+ignore = ["E203", "W503"]
