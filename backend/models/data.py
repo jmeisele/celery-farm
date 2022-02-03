@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from pydantic import BaseModel
 
@@ -34,7 +34,7 @@ class ProblemData(BaseModel):
 
 
 # give some example data for sets and parameter to show in openapi doc
-def get_schema_extra() -> ProblemData:
+def get_schema_extra() -> Dict[str, Any]:
     return {
         "customers": ["c1", "c2", "c3", "c4", "c5"],
         "facilities": ["f1", "f2", "f3"],

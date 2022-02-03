@@ -5,7 +5,8 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from models.model import TaskModel, UpdateTaskModel
-from workers.tasks import reverse
+from models.solver import ProblemData
+from workers.tasks import reverse, solve_problem
 
 router = APIRouter()
 
@@ -16,13 +17,30 @@ async def create_celery_task(payload=Body(...)):
     return JSONResponse({"task_id": task.id})
 
 
+@router.post("/solve", name="Solve Problem")
+async def create_celery_instance(request: Request, payload: ProblemData) -> JSONResponse:
+    # Encode our data
+    data = jsonable_encoder(payload)
+
+    # Insert the encoded data into MongoDB
+    new_task = await request.app.mongodb["solver"].insert_one(data)
+
+    # Get MongoDB ID back and return
+    created_task_id = await request.app.mongodb["solver"].find_one({"_id": new_task.inserted_id})
+
+    # Send MongoDB ID to celery for processing
+    solve_problem.delay(created_task_id)
+
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_task_id)
+
+
 @router.post("/", response_description="Add new task")
 async def create_task(request: Request, task: TaskModel = Body(...)) -> JSONResponse:
     task = jsonable_encoder(task)
+
     new_task = await request.app.mongodb["tasks"].insert_one(task)
-    created_task = await request.app.mongodb["tasks"].find_one(
-        {"_id": new_task.inserted_id}
-    )
+
+    created_task = await request.app.mongodb["tasks"].find_one({"_id": new_task.inserted_id})
 
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_task)
 
@@ -48,19 +66,13 @@ async def update_task(id: str, request: Request, task: UpdateTaskModel = Body(..
     task = {k: v for k, v in task.dict().items() if v is not None}
 
     if len(task) >= 1:
-        update_result = await request.app.mongodb["tasks"].update_one(
-            {"_id": id}, {"$set": task}
-        )
+        update_result = await request.app.mongodb["tasks"].update_one({"_id": id}, {"$set": task})
 
         if update_result.modified_count == 1:
-            if (
-                updated_task := await request.app.mongodb["tasks"].find_one({"_id": id})
-            ) is not None:
+            if (updated_task := await request.app.mongodb["tasks"].find_one({"_id": id})) is not None:
                 return updated_task
 
-    if (
-        existing_task := await request.app.mongodb["tasks"].find_one({"_id": id})
-    ) is not None:
+    if (existing_task := await request.app.mongodb["tasks"].find_one({"_id": id})) is not None:
         return existing_task
 
     raise HTTPException(status_code=404, detail=f"Task {id} not found")
