@@ -497,6 +497,14 @@ python-versions = ">=3.6"
 diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
+name = "pyscipopt"
+version = "3.2.1"
+description = "Python interface and modeling environment for SCIP"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pytest"
 version = "6.2.5"
 description = "pytest: simple powerful testing with Python"
@@ -638,7 +646,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "d80129c77253244b7df6201c1e1ce0aa6a6055623e06d9b648ecfdbaf28708e8"
+content-hash = "8f8931c315b71fc03d54404df87fc3dedb983c9ffdb15627e6e175573e54691c"
 
 [metadata.files]
 amqp = [
@@ -944,6 +952,9 @@ pymongo = [
 pyparsing = [
     {file = "pyparsing-3.0.6-py3-none-any.whl", hash = "sha256:04ff808a5b90911829c55c4e26f75fa5ca8a2f5f36aa3a51f68e27033341d3e4"},
     {file = "pyparsing-3.0.6.tar.gz", hash = "sha256:d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"},
+]
+pyscipopt = [
+    {file = "PySCIPOpt-3.2.1.tar.gz", hash = "sha256:95ccab584cac0036eba731d1990e3b7b235e5d922d222c2f53005b7aa0cdd175"},
 ]
 pytest = [
     {file = "pytest-6.2.5-py3-none-any.whl", hash = "sha256:7310f8d27bc79ced999e760ca304d69f6ba6c6649c0b60fb0e04a4a77cacc134"},

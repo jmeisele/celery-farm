@@ -3,8 +3,8 @@ from typing import Optional
 from pydantic import PrivateAttr
 from pyscipopt import Model, quicksum
 
-from backend.models.solver import ProblemData, SolverParameters
-from backend.optimizer.solver_interface import SolverInterface
+from models.solver import ProblemData, SolverParameters
+from optimizer.solver_interface import SolverInterface
 
 
 class Solver(SolverInterface, ProblemData):

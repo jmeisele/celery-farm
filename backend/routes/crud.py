@@ -5,8 +5,8 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from models.model import TaskModel, UpdateTaskModel
-from models.solver import ProblemData, SCIPInstance
-from workers.tasks import reverse, solve_problem
+from models.solver import SCIPInstance
+from workers.tasks import reverse, optimization
 
 router = APIRouter()
 
@@ -29,7 +29,8 @@ async def create_celery_instance(request: Request, payload: SCIPInstance) -> JSO
     doc_id = await request.app.mongodb["solver"].find_one({"_id": new_task.inserted_id})
 
     # Send MongoDB ID to celery for processing
-    solve_problem.delay(payload.id)
+    # solve_problem.delay(payload.id)
+    optimization.delay(payload.id)
 
     return JSONResponse(status_code=status.HTTP_201_CREATED, content=doc_id)
 

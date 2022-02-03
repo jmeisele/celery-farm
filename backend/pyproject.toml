@@ -22,7 +22,7 @@ isort = "^5.10.1"
 mypy = "^0.930"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["setuptools==60.1.1", "poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
