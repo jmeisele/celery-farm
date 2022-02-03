@@ -25,13 +25,13 @@ async def create_celery_instance(request: Request, payload: ProblemData) -> JSON
     # Insert the encoded data into MongoDB
     new_task = await request.app.mongodb["solver"].insert_one(data)
 
-    # Get MongoDB ID back and return
-    created_task_id = await request.app.mongodb["solver"].find_one({"_id": new_task.inserted_id})
+    # Get MongoDB doc back and return
+    doc_id = await request.app.mongodb["solver"].find_one({"_id": new_task.inserted_id})
 
     # Send MongoDB ID to celery for processing
-    solve_problem.delay(created_task_id)
+    solve_problem.delay(payload.id)
 
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_task_id)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=doc_id)
 
 
 @router.post("/", response_description="Add new task")
