@@ -5,7 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from models.model import TaskModel, UpdateTaskModel
-from models.solver import ProblemData
+from models.solver import ProblemData, SCIPInstance
 from workers.tasks import reverse, solve_problem
 
 router = APIRouter()
@@ -18,7 +18,7 @@ async def create_celery_task(payload=Body(...)):
 
 
 @router.post("/solve", name="Solve Problem")
-async def create_celery_instance(request: Request, payload: ProblemData) -> JSONResponse:
+async def create_celery_instance(request: Request, payload: SCIPInstance) -> JSONResponse:
     # Encode our data
     data = jsonable_encoder(payload)
 

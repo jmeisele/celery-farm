@@ -10,7 +10,7 @@ class ProblemData(BaseModel):
     Example: facility location problem, see https://scipbook.readthedocs.io/en/latest/flp.html
     """
 
-    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    # id: str = Field(default_factory=uuid.uuid4, alias="_id")
     customers: List[str]
     facilities: List[str]
     transportation_cost: Dict[str, Dict[str, int]]
@@ -21,7 +21,7 @@ class ProblemData(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "id": "00010203-0405-0607-0809-0a0b0c0d0e0f",
+                # "id": "00010203-0405-0607-0809-0a0b0c0d0e0f",
                 "customers": ["c1", "c2", "c3", "c4", "c5"],
                 "facilities": ["f1", "f2", "f3"],
                 "transportation_cost": {
@@ -88,3 +88,8 @@ class SolverParameters(BaseModel):
                 },
             }
         }
+
+class SCIPInstance(BaseModel):
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    problem_data: ProblemData
+    solver_params: SolverParameters
