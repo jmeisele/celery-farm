@@ -8,11 +8,12 @@ authors = ["Jason Eisele <jmeisele@yahoo.com>"]
 python = "^3.9"
 fastapi = "^0.70.1"
 pydantic = "^1.9.0"
-motor = "^2.5.1"
 uvicorn = "^0.16.0"
 celery = {extras = ["redis"], version = "^5.2.3"}
 redis = "^4.1.0"
 gunicorn = "^20.1.0"
+motor = "^2.5.1"
+pytest-celery = "^0.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -22,5 +23,34 @@ isort = "^5.10.1"
 mypy = "^0.930"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["setuptools==60.1.1", "poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ['py36']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+# This section is just a doc placeholder..see setup.cfg
+#   https://gitlab.com/pycqa/flake8/-/issues/428#note_251982786
+max-complexity = 10
+format = "pylint"
+statistics = "True"
+max-line-length = 120
+# ignore non-PEP8 lints
+ignore = ["E203", "W503"]

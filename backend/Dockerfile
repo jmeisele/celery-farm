@@ -28,7 +28,9 @@ RUN poetry config virtualenvs.create false
 FROM base as prod
 RUN poetry install --no-dev
 COPY . /app/
+RUN pip3 install -r requirements.txt
 
 FROM base as dev
 RUN poetry install
 COPY . /app/
+RUN pip3 install -r requirements.txt

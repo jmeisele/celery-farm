@@ -37,6 +37,9 @@ services:
   mongo:
     image: mongo
     restart: always
+    environment:
+      DB_URL: "mongo:27017"
+      DB_NAME: "test-db"
 
   redis:
     container_name: redis
@@ -63,4 +66,7 @@ services:
     environment:
       BROKER_URL: "redis://redis:6379/0"
       BACKEND_URL: "redis://redis:6379/0"
+      DB_URL: "mongo:27017"
+      DB_NAME: "test-db"
+
     command: celery -A workers.main worker --loglevel=INFO

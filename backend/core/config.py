@@ -7,7 +7,7 @@ class CommonSettings(BaseSettings):
     APP_NAME: str = "Celery FaRM"
     DEBUG_MODE: bool = False
     VERSION: str = "1.0.0"
-    API_PREFIX: str = "/task"
+    API_PREFIX: str = "/solver"
 
 
 class ServerSettings(BaseSettings):

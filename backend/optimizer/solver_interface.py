@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Optional
 
-from backend.models.solver import SolverParameters
+from models.solver import SolverParameters
 
 
 # definition of a solver interface which must be followed when implementing custom solvers

@@ -3,12 +3,12 @@ from typing import Optional
 from pydantic import PrivateAttr
 from pyscipopt import Model, quicksum
 
-from backend.models.solver import ProblemData, SolverParameters
-from backend.optimizer.solver_interface import SolverInterface
+from models.solver import ProblemData, SolverParameters
+from optimizer.solver_interface import SolverInterface
 
 
 class Solver(SolverInterface, ProblemData):
-    # set additional (private) attributes as needed
+    # Set additional (private) attributes as needed
     _model: str = PrivateAttr()
     _solver_parameters: str = PrivateAttr()
 
@@ -17,7 +17,7 @@ class Solver(SolverInterface, ProblemData):
         self._model = None
         self._solver_parameters = None
 
-    def set_solver_parameters(self, parameters: Optional[SolverParameters] = None):
+    def set_solver_parameters(self, parameters: Optional[SolverParameters] = None):  # noqa: C901
         if parameters:
             self._solver_parameters = parameters
             if "setBoolParam" in self._solver_parameters:
@@ -52,8 +52,7 @@ class Solver(SolverInterface, ProblemData):
             )
         for j in self.facilities:
             self._model.addCons(
-                quicksum(x[i, j] for i in self.customers)
-                <= self.facility_capacity[j] * y[j],
+                quicksum(x[i, j] for i in self.customers) <= self.facility_capacity[j] * y[j],
                 f"Capacity_{j}",
             )
         for (i, j) in x:
@@ -61,11 +60,7 @@ class Solver(SolverInterface, ProblemData):
         # Define objective function
         self._model.setObjective(
             quicksum(self.facility_installation_cost[j] * y[j] for j in self.facilities)
-            + quicksum(
-                self.transportation_cost[i][j] * x[i, j]
-                for i in self.customers
-                for j in self.facilities
-            ),
+            + quicksum(self.transportation_cost[i][j] * x[i, j] for i in self.customers for j in self.facilities),
             "minimize",
         )
 
@@ -82,9 +77,7 @@ class Solver(SolverInterface, ProblemData):
                 "gap": self._model.getGap(),
                 "number_of_decision_vars": self._model.getNVars(),
                 "number_of_constraints": self._model.getNConss(),
-                "decision_variables": {
-                    var.name: self._model.getVal(var) for var in self._model.getVars()
-                },
+                "decision_variables": {var.name: self._model.getVal(var) for var in self._model.getVars()},
             }
         else:
             return {
