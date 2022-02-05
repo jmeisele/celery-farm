@@ -8,7 +8,7 @@ from optimizer.solver_interface import SolverInterface
 
 
 class Solver(SolverInterface, ProblemData):
-    # set additional (private) attributes as needed
+    # Set additional (private) attributes as needed
     _model: str = PrivateAttr()
     _solver_parameters: str = PrivateAttr()
 

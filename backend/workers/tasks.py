@@ -1,11 +1,11 @@
 from time import sleep
-from pprint import pprint
 
 from celery.utils.log import get_task_logger
 from pymongo import MongoClient
-from optimizer.solver import Solver
 
 from db.config import db_settings
+from optimizer.solver import Solver
+
 from .main import celery_app
 
 logger = get_task_logger(__name__)
@@ -22,7 +22,7 @@ def reverse(text):
 
 
 @celery_app.task
-def solve_problem(doc_id: str):    
+def solve_problem(doc_id: str):
     # Pull data out of MongoDB by ID and log it
     data = my_col.find_one({"_id": doc_id})
 
@@ -37,39 +37,33 @@ def solve_problem(doc_id: str):
     #         }
     #     }, upsert=True
     # )
-    
+
     # new_data = my_col.find_one({"_id": doc_id})
-    
+
     solver_params = data["solver_params"]
     logger.info(f"Solver Parameters: {solver_params}")
-    
+
     problem_data = data["problem_data"]
     logger.info(f"Problem Data: {problem_data}")
-    
+
     # logger.info(f"New Data: {new_data}")
     # return doc
+
 
 @celery_app.task
 def optimization(doc_id: str):
     # Pull data out of MongoDB by ID
     data = my_col.find_one({"_id": doc_id})
-
+    # Extract the problem_data and solver_params
     problem_data = data["problem_data"]
     solver_params = data["solver_params"]
-
+    # Unpack problem_data into the Solver class
     solver = Solver(**problem_data)
     solver.build_model()
     solver.set_solver_parameters(solver_params)
     solver.solve_instance()
     solution = solver.get_solution_status()
     logger.info(f"ID: {doc_id} solved")
-    doc = my_col.find_one_and_update(
-        {"_id": doc_id},
-        {"$set":
-            {
-                "solution": solution
-            }
-        }, upsert=True
-    )
+    doc = my_col.find_one_and_update({"_id": doc_id}, {"$set": {"solution": solution}}, upsert=True)
     updated_doc = my_col.find_one({"_id": doc_id})
     logger.info(f"Updated doc: {updated_doc}")

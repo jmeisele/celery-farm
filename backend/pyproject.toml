@@ -13,6 +13,7 @@ celery = {extras = ["redis"], version = "^5.2.3"}
 redis = "^4.1.0"
 gunicorn = "^20.1.0"
 motor = "^2.5.1"
+pytest-celery = "^0.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
