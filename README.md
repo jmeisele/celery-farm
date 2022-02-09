@@ -22,3 +22,9 @@ A full optimization loop looks like this:
 4. Our Celery worker constantly stores the state of the task in our Redis broker which can be polled.
 5. A successful optimization updates the record in MongoDB by the unique ID.
 6. The client can then fetch the results by sending a GET request with the unique ID as a parameter.
+
+## Contributors
+
+<a href="https://github.com/jmeisele/celery-farm/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jmeisele/celery-farm" />
+</a>
