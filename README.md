@@ -28,3 +28,4 @@ A full optimization loop looks like this:
 <a href="https://github.com/jmeisele/celery-farm/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jmeisele/celery-farm" />
 </a>
+
